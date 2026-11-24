@@ -1,0 +1,283 @@
+/* Lays out the eight semesters as tall columns, with the course bank below
+   split into CS levels and non-CS requirements. */
+.plan-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.plan-bar[hidden] {
+  display: none;
+}
+
+.save-status {
+  font-style: italic;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.semesters {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(140px, 1fr));
+  gap: 8px;
+  overflow-x: auto;
+  margin-bottom: 16px;
+}
+
+.semester {
+  border: 1px solid black;
+  padding: 8px;
+  min-height: 360px;
+}
+
+.semester h2 {
+  font-size: 1em;
+  margin: 0;
+}
+
+.semester-hours {
+  margin: 0 0 8px;
+  font-size: 0.85em;
+  font-weight: bold;
+}
+
+.course-bank {
+  border: 1px solid black;
+  padding: 8px;
+}
+
+.course-bank h2 {
+  margin: 0 0 8px;
+}
+
+/* "Course Bank" on the left, "+ Add courses" at the right end of the same row. */
+.bank-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.bank-heading h2 {
+  margin: 0;
+}
+
+.bank-status {
+  flex: 1;
+  font-style: italic;
+}
+
+/* A clicked card: light red, its text faded, with a big round trash can in the middle. */
+.course.remove-mode {
+  background: #fde2e2;
+  border-color: #b00020;
+}
+
+.course.remove-mode > :not(.remove-course) {
+  opacity: 0.35;
+}
+
+.remove-course {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 2px solid #b00020;
+  border-radius: 50%;
+  background: white;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* The Add courses box: almost the whole window, with the page dimmed (but still visible) around it. */
+.add-courses-dialog {
+  width: calc(100vw - 64px);
+  height: calc(100vh - 64px);
+  max-width: none;
+  max-height: none;
+  padding: 0;
+  border: 1px solid black;
+  box-sizing: border-box;
+}
+
+.add-courses-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.dialog-content {
+  padding: 16px;
+}
+
+.dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dialog-header h2 {
+  margin: 0;
+}
+
+.close-dialog {
+  width: 32px;
+  height: 32px;
+  font-size: 18px;
+}
+
+.selected-courses {
+  border: 1px solid black;
+  padding: 8px;
+  margin: 12px 0;
+}
+
+.selected-courses h3 {
+  margin: 0 0 8px;
+}
+
+/* Selected courses sit side by side as small tags that wrap onto new lines. */
+.selected-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.selected-course {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid black;
+  padding: 2px 2px 2px 6px;
+}
+
+.add-status {
+  margin-left: 8px;
+  font-style: italic;
+}
+
+#course-search {
+  display: block;
+  width: 320px;
+  max-width: 100%;
+  margin-top: 4px;
+}
+
+/* Up to five matches under the search box, each a full-width button. */
+.search-matches {
+  max-width: 640px;
+  margin: 4px 0 8px;
+}
+
+.search-matches button {
+  width: 100%;
+  margin-bottom: 2px;
+  text-align: left;
+}
+
+.search-matches button[aria-pressed="true"] {
+  font-weight: bold;
+}
+
+/* On a phone, the box fills more of the screen. */
+@media (max-width: 600px) {
+  .add-courses-dialog {
+    width: calc(100vw - 16px);
+    height: calc(100vh - 16px);
+  }
+}
+
+/* Only columns with courses in them are shown, so they wrap onto new rows instead of
+   leaving empty columns. */
+.bank-groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 8px;
+}
+
+.bank-group[hidden] {
+  display: none;
+}
+
+.bank-group h3 {
+  margin: 0 0 4px;
+}
+
+.course {
+  position: relative;
+  border: 1px solid black;
+  padding: 4px;
+  margin-bottom: 4px;
+  cursor: grab;
+}
+
+.course.missing-prerequisite {
+  border: 2px solid #b00020;
+}
+
+.prerequisite-warning {
+  margin: 4px 0 0;
+  color: #b00020;
+  font-size: 0.85em;
+}
+
+.prerequisite-recommendation {
+  margin: 4px 0 0;
+  color: #666;
+  font-size: 0.85em;
+}
+
+.hint {
+  font-style: italic;
+}
+
+/* 68 technical electives: scroll inside the column instead of making the page very long. */
+.bank-group[data-group="tech-elective"] ul {
+  max-height: 480px;
+  overflow-y: auto;
+}
+
+/* The "i" on cards whose hours vary: a small circle in the card's top-right corner,
+   with room kept for it so it doesn't cover the text. */
+.course:has(.hours-info) {
+  padding-right: 28px;
+}
+
+.hours-info {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: 1px solid black;
+  border-radius: 50%;
+  background: white;
+  font: italic bold 13px/18px serif;
+  cursor: pointer;
+}
+
+/* The box the "i" opens. "fixed" places it relative to the window, on top of everything. */
+.hours-info-box {
+  position: fixed;
+  z-index: 10;
+  width: 240px;
+  max-width: calc(100vw - 16px);
+  box-sizing: border-box;
+  padding: 8px;
+  border: 1px solid black;
+  background: white;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.hours-info-box[hidden] {
+  display: none;
+}

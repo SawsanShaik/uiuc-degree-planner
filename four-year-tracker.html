@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>4-Year Tracker - UIUC Degree Planner</title>
+    <link rel="stylesheet" href="four-year-tracker.css">
+  </head>
+  <body>
+    <nav>
+      <a href="index.html">Main Page</a> |
+      <a href="four-year-tracker.html">4-Year Tracker</a> |
+      <a href="ap-credits.html">AP Credits</a> |
+      <a href="import-resume.html">Import Resume</a>
+    </nav>
+    <h1>4-Year Tracker</h1>
+    <div class="plan-bar">
+      <label for="plan-picker">Plan:</label>
+      <select id="plan-picker"></select>
+      <button type="button" id="rename-plan">Rename</button>
+      <button type="button" id="new-plan">New plan</button>
+      <label for="major-picker">Major:</label>
+      <select id="major-picker"></select>
+      <span id="save-status" class="save-status" aria-live="polite"></span>
+    </div>
+    <form id="plan-name-form" class="plan-bar" hidden>
+      <label id="plan-name-label" for="plan-name">Name (optional):</label>
+      <input id="plan-name" type="text" maxlength="40">
+      <button type="submit" id="plan-name-submit">Create</button>
+      <button type="button" id="cancel-plan-name">Cancel</button>
+    </form>
+    <p>
+      Add courses to the Course Bank (below), then drag them into a semester. You can also
+      drag them between semesters, or back to the bank. Click a course to remove it.
+    </p>
+    <p>
+      <button type="button" disabled>Add minor / double major</button>
+      (coming soon)
+    </p>
+    <div id="semesters" class="semesters"></div>
+    <section id="course-bank" class="course-bank">
+      <div class="bank-heading">
+        <h2>Course Bank</h2>
+        <span id="bank-status" class="bank-status" aria-live="polite"></span>
+        <button type="button" id="open-add-courses">+ Add courses</button>
+      </div>
+      <div id="bank-groups" class="bank-groups">
+        <p class="hint">The courses could not be loaded. Try reloading the page.</p>
+      </div>
+      <p id="bank-empty" class="hint" hidden></p>
+    </section>
+    <dialog id="add-courses-dialog" class="add-courses-dialog" aria-labelledby="add-courses-title">
+      <div class="dialog-content">
+        <div class="dialog-header">
+          <h2 id="add-courses-title">Add courses</h2>
+          <button type="button" id="close-add-courses" class="close-dialog" aria-label="Close">✕</button>
+        </div>
+        <section class="selected-courses" aria-labelledby="selected-heading">
+          <h3 id="selected-heading">Selected (0)</h3>
+          <ul id="selected-list" class="selected-list"></ul>
+          <button type="button" id="add-selected" disabled>Add to course bank</button>
+          <span id="add-status" class="add-status" aria-live="polite"></span>
+        </section>
+        <label for="course-search">Search by course number or title:</label>
+        <input id="course-search" type="search" autocomplete="off" placeholder="Like 425 or database">
+        <ul id="search-matches" class="search-matches" aria-label="Matching courses"></ul>
+        <p>
+          Or start with your major's sample sequence:
+          <button type="button" id="select-default-courses">Select all default CS courses</button>
+        </p>
+      </div>
+    </dialog>
+    <script src="courses.js"></script>
+    <script src="majors.js"></script>
+    <script src="plan-storage.js"></script>
+    <script src="prerequisites.js"></script>
+    <script src="four-year-tracker.js"></script>
+  </body>
+</html>
